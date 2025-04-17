@@ -32,16 +32,16 @@ public class PlayerPiece : MonoBehaviour
             {
                 case Direction.Up:
                     pos.z += 1;
-                    _seq.Append(transform.DOMoveZ(pos.z, _time)); break;
+                    _seq.Append(transform.DOMoveZ(pos.z, _time).SetEase(Ease.Linear)); break;
                 case Direction.Down:
                     pos.z -= 1;
-                    _seq.Append(transform.DOMoveZ(pos.z, _time)); break;
+                    _seq.Append(transform.DOMoveZ(pos.z, _time).SetEase(Ease.Linear)); break;
                 case Direction.Right:
                     pos.x += 1;
-                    _seq.Append(transform.DOMoveX(pos.x, _time)); break;
+                    _seq.Append(transform.DOMoveX(pos.x, _time).SetEase(Ease.Linear)); break;
                 case Direction.Left:
                     pos.x -= 1;
-                    _seq.Append(transform.DOMoveX(pos.x, _time)); break;
+                    _seq.Append(transform.DOMoveX(pos.x, _time).SetEase(Ease.Linear)); break;
             }
             _seq.Play();
         }
