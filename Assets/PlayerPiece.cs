@@ -6,11 +6,12 @@ using Cysharp.Threading.Tasks;
 public class PlayerPiece : MonoBehaviour
 {
     [SerializeField] float _time = 1;
-    Sequence _seq;
+    Queue<Direction> _commands;
     // Start is called before the first frame update
     void Start()
     {
-        
+        _commands = new Queue<Direction>();
+        StartCoroutine(Move());
     }
 
     // Update is called once per frame
@@ -18,32 +19,38 @@ public class PlayerPiece : MonoBehaviour
     {
 
     }
-    public void Move(List<Direction> commands)
+    public void AddMoveCommand(Direction direction)
     {
-        Debug.Log($"command count:{commands.Count}");
-        _seq = DOTween.Sequence();
-        Vector3 pos = transform.position;
-        for (int i = 0; i < commands.Count; i ++)
+        _commands.Enqueue(direction);
+    }
+    IEnumerator Move()
+    {
+        while(true)
         {
-            Direction dir = commands[i];
-            Debug.Log(dir.ToString());
-            bool isComplete = false;
-            switch (dir)
+            if(_commands.Count > 0)
             {
-                case Direction.Up:
-                    pos.z += 1;
-                    _seq.Append(transform.DOMoveZ(pos.z, _time).SetEase(Ease.Linear)); break;
-                case Direction.Down:
-                    pos.z -= 1;
-                    _seq.Append(transform.DOMoveZ(pos.z, _time).SetEase(Ease.Linear)); break;
-                case Direction.Right:
-                    pos.x += 1;
-                    _seq.Append(transform.DOMoveX(pos.x, _time).SetEase(Ease.Linear)); break;
-                case Direction.Left:
-                    pos.x -= 1;
-                    _seq.Append(transform.DOMoveX(pos.x, _time).SetEase(Ease.Linear)); break;
+                Direction dir = _commands.Dequeue();
+                bool isMoving = true;
+                switch (dir)
+                {
+                    case Direction.Up:
+                        transform.DOMoveZ(transform.position.z + 1, _time).SetEase(Ease.Linear).OnComplete(() => isMoving = false); break;
+                    case Direction.Down:
+                        transform.DOMoveZ(transform.position.z - 1, _time).SetEase(Ease.Linear).OnComplete(() => isMoving = false); break;
+                    case Direction.Right:
+                        transform.DOMoveX(transform.position.x + 1, _time).SetEase(Ease.Linear).OnComplete(() => isMoving = false); break;
+                    case Direction.Left:
+                        transform.DOMoveX(transform.position.x - 1, _time).SetEase(Ease.Linear).OnComplete(() => isMoving = false); break;
+                }
+                while(isMoving)
+                {
+                    yield return null;
+                }
             }
-            _seq.Play();
+            else
+            {
+                yield return null;
+            }
         }
     }
     private void OnCollisionEnter(Collision collision)
