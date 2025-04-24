@@ -4,27 +4,24 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    [SerializeField] PlayerPiece _playerPiece;
-    List<Direction> _directions;
-    // Start is called before the first frame update
+    PlayerPiece _playerPiece;
     void Start()
     {
-        _directions = new List<Direction>();
     }
-
-    // Update is called once per frame
     void Update()
     {
         
     }
+    public void SetPlayerPiece(PlayerPiece playerPiece)
+    {
+        _playerPiece = playerPiece;
+    }
     public void SetDirection(int directionId)
     {
-        Direction direction = (Direction)directionId;
-        _directions.Add(direction);
-    }
-    public void SubmitAction()
-    {
-        _playerPiece.Move(_directions);
-        _directions.Clear();
+        if(_playerPiece != null)
+        {
+            Direction direction = (Direction)directionId;
+            _playerPiece.AddMoveCommand(direction);
+        }
     }
 }
