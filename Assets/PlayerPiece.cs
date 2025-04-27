@@ -34,30 +34,36 @@ public class PlayerPiece : MonoBehaviour
                 switch (dir)
                 {
                     case Direction.Up:
+                        transform.forward = Vector3.forward;
                         transform.DOMoveZ(transform.position.z + 1, _time).SetEase(Ease.Linear).OnComplete(() => isMoving = false); break;
                     case Direction.Down:
+                        transform.forward = Vector3.back;
                         transform.DOMoveZ(transform.position.z - 1, _time).SetEase(Ease.Linear).OnComplete(() => isMoving = false); break;
                     case Direction.Right:
+                        transform.forward = Vector3.right;
                         transform.DOMoveX(transform.position.x + 1, _time).SetEase(Ease.Linear).OnComplete(() => isMoving = false); break;
                     case Direction.Left:
+                        transform.forward = Vector3.left;
                         transform.DOMoveX(transform.position.x - 1, _time).SetEase(Ease.Linear).OnComplete(() => isMoving = false); break;
                 }
                 while(isMoving)
                 {
                     yield return null;
                 }
+                if(!Physics.Raycast(transform.position,Vector3.down))
+                {
+                    _commands.Clear();
+                    Rigidbody rb = GetComponent<Rigidbody>();
+                    rb.useGravity = true;
+                    rb = transform.GetChild(0).GetComponent<Rigidbody>();
+                    rb.useGravity = true;
+                    SoundManager.Instance.PlaySE("Fall");
+                }
             }
             else
             {
                 yield return null;
             }
-        }
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.CompareTag("Player"))
-        {
-            Destroy(gameObject);
         }
     }
 }
