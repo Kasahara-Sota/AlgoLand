@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 public class RTClickHandler : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] Camera _rtCamera;           // RenderTexture を映しているカメラ
+    [SerializeField] CinemachineVirtualCamera _vCam;
     [SerializeField] RawImage _rawImage;         // クリック対象の UI
     [SerializeField] InputManager _inputManager;
     public void OnPointerClick(PointerEventData eventData)
@@ -38,6 +40,8 @@ public class RTClickHandler : MonoBehaviour, IPointerClickHandler
             if(obj.CompareTag("Player"))
             {
                 _inputManager.SetPlayerPiece(obj.GetComponent<PlayerPiece>());
+                _vCam.Follow = obj.transform;
+                _vCam.MoveToTopOfPrioritySubqueue();
             }
         }
     }
