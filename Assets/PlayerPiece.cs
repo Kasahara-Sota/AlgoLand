@@ -29,6 +29,7 @@ public class PlayerPiece : MonoBehaviour
         if (!_isMoving)
         {
             _commands.Clear();
+            StopCoroutine(Move());
             Rigidbody rb = GetComponent<Rigidbody>();
             rb.useGravity = true;
             rb = transform.GetChild(0).GetComponent<Rigidbody>();
