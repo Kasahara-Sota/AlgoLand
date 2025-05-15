@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6921156275986123541}
   - component: {fileID: 201885615238067074}
   - component: {fileID: -504344657191298202}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tile1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,4 +119,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 156c2ba064a854e448098076e0242910, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadeTime: 5
+  _fadeDisAppearTime: 5
+  _fadeAppearTime: 1
